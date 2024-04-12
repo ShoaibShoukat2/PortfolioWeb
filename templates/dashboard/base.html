@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title>{% block title %}{% endblock title %}</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css" />
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" />
+  <!-- MDB -->
+  <link rel="stylesheet" href="{% static 'dashboard/css/mdb.min.css' %}" />
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="{% static 'dashboard/css/admin.css' %}" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
+    crossorigin="anonymous"></script>
+    <style>
+      /* Additional CSS for styling the modal */
+      .custom-modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+      }
+  
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+      }
+    </style>
+
+{% block extra_css %}
+{% endblock extra_css %}
+    
+   
+   <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        // Check if the session exists
+        var userEmail = "{{ request.session.user_email }}"; // Assuming 'user_email' is the key used to store email in the session
+  
+        if (!userEmail) {
+          // Show an alert box if session doesn't exist
+          document.getElementById('customModal').style.display = 'block';
+        document.getElementById('modalOverlay').style.display = 'block';
+
+        setTimeout(function () {
+        window.location.href = '/login';
+      }, 2000);
+    }
+      });
+    </script>
+
+
+</head>
+
+<body>
+
+  <!--Main Navigation-->
+
+  <header>
+    <!-- Sidebar -->
+    <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+      <div class="position-sticky">
+        <div class="list-group list-group-flush mx-3 mt-4">
+          <a href="/dashboard" class="list-group-item list-group-item-action py-2" data-mdb-ripple-init aria-current="true">
+            <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Main dashboard</span>
+          </a>
+         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+
+          <a href="/dashboard" class="list-group-item list-group-item-action py-2 active bg-dark" data-mdb-ripple-init>
+            <i class="fas fa-chart-area fa-fw me-3"></i><span>Dashboard </span>
+          </a>
+          <a href="/dashboard/user" class="list-group-item list-group-item-action py-2" data-mdb-ripple-init>
+            <i class="fas fa-user fa-fw me-3"></i><span>Users</span>
+          </a>
+          <a href="/dashboard/Add-Products" class="list-group-item list-group-item-action py-2" data-mdb-ripple-init>
+            <i class="fas fa-tasks fa-fw me-3"></i><span>Add Project</span>
+          </a>
+          <a href="/dashboard/Add-Category" class="list-group-item list-group-item-action py-2" data-mdb-ripple-init>
+            <i class="fas fa-plus me-3"></i> <span>Add Category</span>
+             <!-- Edit Icon -->
+        </a>
+                
+        </div>
+      </div>
+    </nav>
+    <!-- Sidebar -->
+
+    <!-- Navbar -->
+    <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <!-- Container wrapper -->
+        <div class="container-fluid">
+            <!-- Toggle button -->
+            <button class="navbar-toggler" type="button" data-mdb-collapse-init data-mdb-target="#sidebarMenu"
+                aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <!-- Brand -->
+            <a class="navbar-brand" href="#">
+                Dashboard
+            </a>
+            
+    
+            <!-- Links -->
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                  {% if request.session.user_email %}
+                  <li class="nav-item">
+                    <span class="nav-link">Logged in as: {{ request.session.user_email }}</span>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/dashboard/logout" class="nav-link">Logout</a>
+                </li>
+                
+                  {% else %}
+
+                  <li class="nav-item">
+                    <span class="nav-link">Guest</span>
+                  </li>
+                {% endif %}
+                </li>
+            </ul>
+
+           
+    
+        </div>
+        <!-- Container wrapper -->
+    </nav>
+    
+    <!-- Navbar -->
+  </header>
+  <!--Main Navigation-->
+
+  {% block main_content %}
+
+  {% endblock main_content %}
+
+  <div id="modalOverlay" class="modal-overlay"></div>
+  <div id="customModal" class="custom-modal">
+    <h3>Please log in first!</h3>
+    <p>Redirecting to login page...</p>
+  </div>
+ 
+  <!-- MDB -->
+  <script type="text/javascript" src="{% static 'dashboard/js/mdb.umd.min.js' %}"></script>
+  <!-- Custom scripts -->
+  <script type="text/javascript" src="{% static 'dashboard/js/admin.js' %}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+  
+  {% block extra_js %}
+
+  {% endblock extra_js %}
+
+</body>
+
+</html>

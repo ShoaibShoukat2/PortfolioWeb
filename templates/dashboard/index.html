@@ -1,0 +1,73 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}
+Dashboard
+{% endblock title %}
+
+{% block extra_css %}
+<style>
+    .delete-icon-container {
+        position: relative;
+        display: inline-block;
+    }
+    .delete-icon {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+        color: red;
+        font-size: 24px;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        padding: 5px;
+        transition: all 0.3s ease;
+    }
+    .delete-icon-container:hover .delete-icon {
+        display: block;
+    }
+    .card:hover img {
+        filter: brightness(70%);
+    }
+</style>
+{% endblock extra_css %}
+
+{% block main_content %}
+<div class="container mt-4">
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-4 mb-4">
+            <div class="card position-relative">
+                <div class="card-body">
+                    {% if product.image %}
+                        <div class="delete-icon-container">
+                            <img src="{{ product.image.url }}" alt="{{ product.title }}" class="img-fluid mb-3">
+                            <!-- Delete icon -->
+                            <a href="/dashboard/delete-product/{{product.id}}" class="delete-icon">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    {% else %}
+                        <!-- Display empty icon with MDB -->
+                        <i class="fas fa-image fa-3x mb-3 text-muted"></i>
+                    {% endif %}
+                    <h5 class="card-title">{{ product.title }}</h5>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock main_content %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get all delete icons
+        const deleteIcons = document.querySelectorAll('.delete-icon');
+
+    });
+</script>
+{% endblock extra_js %}

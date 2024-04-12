@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width,initial-scale=1" name="viewport">
+  <meta content="description" name="description">
+  <meta name="google" content="notranslate" />
+  <meta content="Mashup templates have been developed by Orson.io team" name="author">
+
+  <!-- Disable tap highlight on IE -->
+  <meta name="msapplication-tap-highlight" content="no">
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static './assets/apple-icon-180x180.png' %}">
+  <link href="{% static './assets/favicon.ico' %}" rel="icon">
+
+  <title>Projects</title>  
+
+  <link href="{% static './main.3f6952e4.css' %}" rel="stylesheet">
+
+  <style>
+    /* Add hover animation to project images */
+    .project-image {
+      transition: transform 0.3s ease-in-out;
+      transform-origin: center center;
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+
+    .project-image:hover {
+      transform: scale(1.1);
+    }
+
+    /* Style categories */
+    .project-category {
+      font-size: 14px;
+      color: #555;
+      margin-top: 5px;
+    }
+
+    /* Ensure fixed dimensions for project containers */
+    .project-wrapper {
+      width: 100%;
+      height: 300px; /* Adjust height as needed */
+      overflow: hidden;
+    }
+
+    .project-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Ensure consistent spacing between projects */
+    .project-container {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body class="">
+  <div id="site-border-left"></div>
+  <div id="site-border-right"></div>
+  <div id="site-border-top"></div>
+  <div id="site-border-bottom"></div>
+
+  <!-- Add your content of header -->
+  <header>
+    <nav class="navbar navbar-fixed-top navbar-default">
+      <div class="container">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+          <ul class="nav navbar-nav ">
+            <li><a href="/" title="">01 : Home</a></li>
+            <li><a href="/projects" title="">02 : Projects</a></li>
+            <li><a href="/aboutme" title="">03 : About me</a></li>
+            <li><a href="/contact" title="">04 : Contact</a></li>
+            <li><a href="/dashboard" title="">05 : Dashboard</a></li>
+          </ul>         
+        </div> 
+      </div>
+    </nav>
+  </header>
+
+  <div class="section-container">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <img src="./assets/images/work001-01.jpg" class="img-responsive" alt="">
+          <div class="card-container">
+            <blockquote>
+              <p style="text-align: center;margin-top: 20px;">Projects</p>
+              <small class="pull-right">Muhammad Ali Irfan</small>
+            </blockquote>
+          </div>
+        </div>
+
+        <div class="col-md-8 col-md-offset-2 section-container-spacer">
+          <div class="row">
+            {% for category, products in category_data.items %}
+            <div class="col-xs-12">
+              <h2 class="text-center">{{ category }}</h2>
+            </div>
+            {% for product in products %}
+            <div class="col-xs-12 col-md-6 project-container">
+              <div class="project-wrapper">
+                <img src="{{ product.image.url }}" class="img-responsive project-image" alt="" data-category="{{ category }}">
+              </div>
+              <p>{{ product.title }}</p>
+              <div class="project-description">
+                <p>{{ product.description }}</p>
+              </div>
+            </div>
+            {% endfor %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer-container text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <p>© UNTITLED | Website created with <a href="http://www.mashup-template.com/" title="Create website with free html template">Mashup Template</a>/<a href="https://www.unsplash.com/" title="Beautiful Free Images">Unsplash</a></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+      navActivePage();
+
+      // Add event listeners for hover effect and category display
+      const projectImages = document.querySelectorAll('.project-image');
+
+      projectImages.forEach(image => {
+        image.addEventListener('mouseenter', showCategory);
+        image.addEventListener('mouseleave', hideCategory);
+      });
+
+      function showCategory(event) {
+        const category = event.target.dataset.category;
+        const categoryElement = document.createElement('div');
+        categoryElement.className = 'project-category';
+        categoryElement.textContent = category;
+        event.target.parentNode.appendChild(categoryElement);
+      }
+
+      function hideCategory(event) {
+        const categoryElement = event.target.parentNode.querySelector('.project-category');
+        if (categoryElement) {
+          categoryElement.remove();
+        }
+      }
+    });
+  </script>
+
+  <script type="text/javascript" src="{% static './main.70a66962.js' %}"></script>
+</body>
+
+</html>
