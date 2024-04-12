@@ -50,7 +50,8 @@ def logout(request):
 
     context = {'message': 'Successfully logged out'}
 
-    return render(request,'index.html',context)
+    return redirect('/')
+    
     
 
 
